@@ -1,9 +1,15 @@
 {
   "name": "iam-request-signers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple signers for aws requests that require IAM authorization.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc --build && cp package.json build"
+    "build": "tsc --build"
   },
   "author": {
     "name": "Jerry-VW",

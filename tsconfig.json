@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es5",
-    "module": "commonjs",
-    "outDir": "build",
-    "declaration": true
+    "target": "ESNext",
+    "module": "ESNext",
+    "outDir": "dist",
+    "declaration": true,
+    "moduleResolution": "Node"
   }
 }
