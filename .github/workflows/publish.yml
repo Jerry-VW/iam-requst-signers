@@ -13,9 +13,10 @@ jobs:
         with:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
+          always-auth: true
       - name: Install dependencies and build 🔧
         run: npm ci && npm run build
       - name: Publish package on NPM 📦
-        run: npm publish
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc && npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
