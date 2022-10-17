@@ -15,7 +15,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           always-auth: true
       - name: Build
-        run: yarn build
+        run: yarn && yarn build
       - name: Publish package on NPM 📦
         run: yarn publish
         env:
