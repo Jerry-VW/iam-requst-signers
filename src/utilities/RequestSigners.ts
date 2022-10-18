@@ -86,7 +86,7 @@ export const signRequestAxiosInterceptor = (
  * @param targetServiceInformation Information about target service. Default is for execute-api in region ap-northeast-1.
  * @param credentials Caller credentials for signing process.
  */
-export const attachDesignatedSignRequestAxiosInterceptor = async (
+export const attachDesignatedSignRequestAxiosInterceptor = (
   axios: AxiosInstance,
   targetRoleArn: string,
   targetServiceInformation: IInterceptorTargetServiceInformation = {
