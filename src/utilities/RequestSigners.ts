@@ -47,38 +47,37 @@ export const signRequestHttpRequest = async (
  * @param targetServiceInformation Information about target service. Default is for execute-api in region ap-northeast-1.
  * @param credentials Caller credentials for signing process.
  */
-export const signRequestAxiosInterceptor = async (
+export const signRequestAxiosInterceptor = (
   roleArn: string,
   targetServiceInformation: IInterceptorTargetServiceInformation = {
     region : 'ap-northeast-1',
     service: 'execute-api'
   },
   credentials?: ICredentials
-) => {
+) => async (cfg: AxiosRequestConfig) => {
   const assumedCredentials = await retrieveAssumeRoleCredentials(roleArn, credentials)
 
-  return (cfg: AxiosRequestConfig) => {
-    const request = {
-      method: cfg.method?.toUpperCase() ?? 'GET',
-      url   : cfg.url,
-      data  : JSON.stringify(cfg.data)
-    }
-    const accessInfo = {
-      access_key   : assumedCredentials.Credentials.AccessKeyId,
-      secret_key   : assumedCredentials.Credentials.SecretAccessKey,
-      session_token: assumedCredentials.Credentials.SessionToken
-    }
-    const serviceInfo = {
-      service: targetServiceInformation.service,
-      region : targetServiceInformation.region
-    }
-    const signedRequest = Signer.sign(request, accessInfo, serviceInfo)
-
-    cfg.headers = { ...cfg.headers, ...signedRequest.headers }
-
-    return cfg
+  const request = {
+    method: cfg.method?.toUpperCase() ?? 'GET',
+    url   : cfg.url,
+    data  : JSON.stringify(cfg.data)
   }
+  const accessInfo = {
+    access_key   : assumedCredentials.Credentials.AccessKeyId,
+    secret_key   : assumedCredentials.Credentials.SecretAccessKey,
+    session_token: assumedCredentials.Credentials.SessionToken
+  }
+  const serviceInfo = {
+    service: targetServiceInformation.service,
+    region : targetServiceInformation.region
+  }
+  const signedRequest = Signer.sign(request, accessInfo, serviceInfo)
+
+  cfg.headers = { ...cfg.headers, ...signedRequest.headers }
+
+  return cfg
 }
+
 
 /**
  * Attach signer as request interceptor to axios instance.
@@ -96,7 +95,7 @@ export const attachDesignatedSignRequestAxiosInterceptor = async (
   },
   credentials?: ICredentials
 ) =>
-  axios.interceptors.request.use(await signRequestAxiosInterceptor(targetRoleArn, targetServiceInformation, credentials))
+  axios.interceptors.request.use(signRequestAxiosInterceptor(targetRoleArn, targetServiceInformation, credentials))
 
 export default {
   signRequestHttpRequest,
