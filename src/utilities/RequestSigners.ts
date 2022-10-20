@@ -96,9 +96,3 @@ export const attachDesignatedSignRequestAxiosInterceptor = (
   credentials?: ICredentials
 ) =>
   axios.interceptors.request.use(signRequestAxiosInterceptor(targetRoleArn, targetServiceInformation, credentials))
-
-export default {
-  signRequestHttpRequest,
-  signRequestAxiosInterceptor,
-  attachDesignatedSignRequestAxiosInterceptor
-}
