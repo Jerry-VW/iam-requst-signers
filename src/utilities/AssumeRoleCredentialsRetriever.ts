@@ -1,5 +1,5 @@
 import { STSClient, AssumeRoleCommand } from '@aws-sdk/client-sts'
-import { ICredentials } from './types'
+import type { ICredentials } from './types.js'
 
 /**
  * Assume role credentials retriever.
@@ -11,8 +11,8 @@ const retrieveAssumeRoleCredentials = async (
   credentials?: ICredentials
 ) =>
   await new STSClient({
-    region     : 'ap-northeast-1',
-    credentials: credentials
+    region: 'ap-northeast-1',
+    ...(credentials && { credentials: credentials })
   }).send(new AssumeRoleCommand({
     RoleArn        : roleArn,
     RoleSessionName: 'DefaultAssumedRoleSession'

@@ -1,11 +1,12 @@
 import { SignatureV4 } from '@aws-sdk/signature-v4'
 import { Sha256 } from '@aws-crypto/sha256-js'
 import { HttpRequest } from '@aws-sdk/protocol-http'
-import { HttpRequest as TypeHR } from '@aws-sdk/types/dist-types/http'
-import { AxiosInstance, AxiosRequestConfig } from 'axios'
+import type { HttpRequest as TypeHR } from '@aws-sdk/types'
+import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { Signer } from '@aws-amplify/core'
-import { ICredentials, IInterceptorTargetServiceInformation } from './types'
-import retrieveAssumeRoleCredentials from './AssumeRoleCredentialsRetriever'
+import assert from 'assert'
+import type { ICredentials, IInterceptorTargetServiceInformation } from './types.js'
+import retrieveAssumeRoleCredentials from './AssumeRoleCredentialsRetriever.js'
 
 /**
  * Api Gateway request IAM signer for HttpRequest.
@@ -18,13 +19,13 @@ import retrieveAssumeRoleCredentials from './AssumeRoleCredentialsRetriever'
  * @param service (Optional) Service name.
  */
 export const signRequestHttpRequest = async (
+  credentials: ICredentials,
   path: string,
   method: string,
   headers: Record<string | 'host', string>,
   body?: unknown,
   region: string = 'ap-northeast-1',
-  service: string = 'execute-api',
-  credentials?: ICredentials
+  service: string = 'execute-api'
 ): Promise<TypeHR> =>
   await new SignatureV4({
     credentials: credentials,
@@ -33,7 +34,7 @@ export const signRequestHttpRequest = async (
     sha256     : Sha256
   }).sign(
     new HttpRequest({
-      hostname: headers['host'],
+      hostname: headers['host'] ?? '',
       path,
       method  : method.toUpperCase(),
       headers,
@@ -56,6 +57,8 @@ export const signRequestAxiosInterceptor = (
   credentials?: ICredentials
 ) => async (cfg: AxiosRequestConfig) => {
   const assumedCredentials = await retrieveAssumeRoleCredentials(roleArn, credentials)
+
+  assert(assumedCredentials.Credentials, 'No assumed credentials.')
 
   const request = {
     method: cfg.method?.toUpperCase() ?? 'GET',

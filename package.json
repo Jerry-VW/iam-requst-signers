@@ -1,6 +1,6 @@
 {
   "name": "iam-request-signers",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Simple signers for aws requests that require IAM authorization.",
   "type": "module",
   "main": "dist/index.js",
@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@tsconfig/node16-strictest-esm": "^1.0.3",
     "@types/node": "^18.7.16",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
