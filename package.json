@@ -1,6 +1,6 @@
 {
   "name": "iam-request-signers",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Simple signers for aws requests that require IAM authorization.",
   "type": "module",
   "main": "dist/index.js",
@@ -42,6 +42,10 @@
     "@aws-amplify/core" : "^4.7.8"
   },
   "peerDependencies": {
-    "axios": "^1"
+    "axios": "^1",
+    "@aws-sdk/types": "^3.188.0",
+    "@aws-sdk/signature-v4": "^3.188.0",
+    "@aws-sdk/protocol-http": "^3.188.0",
+    "@aws-sdk/client-sts": "^3.188.0"
   }
 }
