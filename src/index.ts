@@ -1,4 +1,3 @@
-/**
- * Request Signers.
- */
-export * as RequestSigners from './utilities/RequestSigners.js'
+export * from './utilities/RequestSigners.js'
+export * from './utilities/AssumeRoleCredentialsRetriever.js'
+export * from './utilities/types.js'
