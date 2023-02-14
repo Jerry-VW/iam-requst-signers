@@ -6,7 +6,7 @@ import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { Signer } from '@aws-amplify/core'
 import assert from 'assert'
 import type { ICredentials, IInterceptorTargetServiceInformation } from './types.js'
-import retrieveAssumeRoleCredentials from './AssumeRoleCredentialsRetriever.js'
+import { retrieveAssumeRoleCredentials } from './AssumeRoleCredentialsRetriever.js'
 
 /**
  * Api Gateway request IAM signer for HttpRequest.

@@ -6,7 +6,7 @@ import type { ICredentials } from './types.js'
  * @param credentials Credentials for signing process.
  * @param roleArn Arn string of the role that is getting assumed.
  */
-const retrieveAssumeRoleCredentials = async (
+export const retrieveAssumeRoleCredentials = async (
   roleArn: string,
   credentials?: ICredentials
 ) =>
@@ -17,5 +17,3 @@ const retrieveAssumeRoleCredentials = async (
     RoleArn        : roleArn,
     RoleSessionName: 'DefaultAssumedRoleSession'
   }))
-
-export default retrieveAssumeRoleCredentials
