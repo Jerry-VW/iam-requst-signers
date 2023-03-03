@@ -1,6 +1,6 @@
 {
   "name": "iam-request-signers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple signers for aws requests that require IAM authorization.",
   "type": "module",
   "main": "dist/index.js",

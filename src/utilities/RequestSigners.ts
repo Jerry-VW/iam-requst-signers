@@ -47,6 +47,8 @@ export const signRequestHttpRequest = async (
  * @param roleArn Arn of the AssumeRole.
  * @param targetServiceInformation Information about target service. Default is for execute-api in region ap-northeast-1.
  * @param credentials Caller credentials for signing process.
+ * @param region
+ * @param roleSessionName
  */
 export const signRequestAxiosInterceptor = (
   roleArn: string,
@@ -54,9 +56,11 @@ export const signRequestAxiosInterceptor = (
     region : 'ap-northeast-1',
     service: 'execute-api'
   },
-  credentials?: ICredentials
+  credentials?: ICredentials,
+  region: string = 'ap-northeast-1',
+  roleSessionName: string = 'DefaultAssumedRoleSession'
 ) => async (cfg: AxiosRequestConfig) => {
-  const assumedCredentials = await retrieveAssumeRoleCredentials(roleArn, credentials)
+  const assumedCredentials = await retrieveAssumeRoleCredentials(roleArn, credentials, region, roleSessionName)
 
   assert(assumedCredentials.Credentials, 'No assumed credentials.')
 
@@ -88,6 +92,8 @@ export const signRequestAxiosInterceptor = (
  * @param targetRoleArn Arn of the AssumeRole.
  * @param targetServiceInformation Information about target service. Default is for execute-api in region ap-northeast-1.
  * @param credentials Caller credentials for signing process.
+ * @param region
+ * @param roleSessionName
  */
 export const attachDesignatedSignRequestAxiosInterceptor = (
   axios: AxiosInstance,
@@ -96,6 +102,8 @@ export const attachDesignatedSignRequestAxiosInterceptor = (
     region : 'ap-northeast-1',
     service: 'execute-api'
   },
-  credentials?: ICredentials
+  credentials?: ICredentials,
+  region: string = 'ap-northeast-1',
+  roleSessionName: string = 'DefaultAssumedRoleSession'
 ) =>
-  axios.interceptors.request.use(signRequestAxiosInterceptor(targetRoleArn, targetServiceInformation, credentials))
+  axios.interceptors.request.use(signRequestAxiosInterceptor(targetRoleArn, targetServiceInformation, credentials, region, roleSessionName))
